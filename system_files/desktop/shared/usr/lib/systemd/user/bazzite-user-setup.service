@@ -1,9 +1,0 @@
-[Unit]
-Description=Configure Bazzite for current user
-
-[Service]
-Type=simple
-ExecStart=/usr/bin/bazzite-user-setup
-
-[Install]
-WantedBy=default.target

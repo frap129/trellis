@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# Enable NTP
-timedatectl set-ntp true
