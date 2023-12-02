@@ -1,5 +1,5 @@
 <!---               
-Thank you for contributing to the Universal Blue project!
+Thank you for contributing to the Trellis project!
 Here are some tips for you:
 
 In this project we follow [Semantic PRs][1] and [Conventional Commits][2] to describe features and fixes we made. It would be nice if you did too as we use this to generate changelogs with the right sections: 
