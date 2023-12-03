@@ -56,14 +56,15 @@ RUN userdel -r build && \
         /tmp/* \
         /var/cache/pacman/pkg/*d a user for it
 
-
 # Setup ALHP Repos
-RUN sed -i '/\#\[core-testing\]/i \
-[core-x86-64-v3]\
-Include = /etc/pacman.d/alhp-mirrorlist\
-\
-[extra-x86-64-v3] \
-Include = /etc/pacman.d/alhp-mirrorlist' /etc/pacman.conf
+RUN pacman-key --init && \
+    pacman-key --populate && \
+    sed -i '/\#\[core-testing\]/i \
+[core-x86-64-v3]\n\
+Include = /etc/pacman.d/alhp-mirrorlist\n\
+\n\
+[extra-x86-64-v3]\n\
+Include = /etc/pacman.d/alhp-mirrorlist\n' /etc/pacman.conf
 
 # Install kernel, firmware, microcode, filesystem tools, bootloader, depndencies and run hooks once:
 RUN pacman -Syyu --noconfirm && \
@@ -77,7 +78,7 @@ RUN pacman -Syyu --noconfirm && \
     mkinitcpio \
     podman \
     ostree \
-    distrobox
+    distrobox \
     plymouth \
     networkmanager \
     dbus-broker \
