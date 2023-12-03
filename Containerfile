@@ -81,6 +81,7 @@ RUN pacman -Syyu --noconfirm && \
     plymouth \
     networkmanager \
     dbus-broker \
+    zram-generator \
     --noconfirm
 
 # Enable default services
@@ -107,6 +108,8 @@ RUN moduledir=$(find /usr/lib/modules -mindepth 1 -maxdepth 1 -type d) && \
 # OSTree: Bootloader integration
 RUN curl https://raw.githubusercontent.com/ostreedev/ostree/v2023.6/src/boot/grub2/grub2-15_ostree -o /etc/grub.d/15_ostree && \
     chmod +x /etc/grub.d/15_ostree
+
+ADD rootfs/etc/systemd/zram-generator.conf /etc/systemd/zram-generator.conf
 
 # Cleanup packages
 RUN pacman -Rcns \
