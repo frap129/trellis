@@ -109,9 +109,10 @@ RUN curl https://raw.githubusercontent.com/ostreedev/ostree/v2023.6/src/boot/gru
 
 # Cleanup packages
 RUN pacman -Rcns \
-    git \
     base-devel \
+    git \
     clang \
     llvm \
     lld \
-    --noconfirm
+    --noconfirm && \
+    pacman -Rcns $(pacman -Qttdq) --noconfirm
