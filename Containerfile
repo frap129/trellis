@@ -107,7 +107,7 @@ RUN moduledir=$(find /usr/lib/modules -mindepth 1 -maxdepth 1 -type d) && \
         > ${moduledir}/initramfs.img
 
 # OSTree: Bootloader integration
-RUN curl https://raw.githubusercontent.com/ostreedev/ostree/v2023.6/src/boot/grub2/grub2-15_ostree -o /etc/grub.d/15_ostree && \
+RUN curl https://raw.githubusercontent.com/ostreedev/ostree/main/src/boot/grub2/grub2-15_ostree -o /etc/grub.d/15_ostree && \
     chmod +x /etc/grub.d/15_ostree
 
 ADD rootfs/etc/systemd/zram-generator.conf /etc/systemd/zram-generator.conf
