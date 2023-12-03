@@ -77,14 +77,19 @@ RUN pacman -Syyu --noconfirm && \
     mkinitcpio \
     podman \
     ostree \
+    distrobox
     plymouth \
-    which \
     networkmanager \
+    dbus-broker \
     --noconfirm
 
 # Enable default services
 RUN systemctl enable ananicy-cpp && \
-    systemctl enable uksmd
+    systemctl enable uksmd && \
+    systemctl enable dbus-broker && \
+    systemctl enable systemd-oomd && \
+    systemctl enable NetworkManager.service && \
+    systemctl mask systemd-networkd-wait-online.service
 
 # Native march & tune. We do this last because it'll only apply to updates the user makes going forward.
 # We don't want to optimize for the build host's environment.
@@ -92,10 +97,6 @@ RUN sed -i 's/-march=x86-64 -mtune=generic/-march=native -mtune=native/g' /etc/m
 
 # Podman: native Overlay Diff for optimal Podman performance
 RUN echo "options overlay metacopy=off redirect_dir=off" > /etc/modprobe.d/disable-overlay-redirect-dir.conf
-
-# Configure Networking
-RUN systemctl enable NetworkManager.service && \
-    systemctl mask systemd-networkd-wait-online.service
 
 # OSTree: Prepare microcode and initramfs
 RUN moduledir=$(find /usr/lib/modules -mindepth 1 -maxdepth 1 -type d) && \
