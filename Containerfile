@@ -39,7 +39,7 @@ RUN git clone https://aur.archlinux.org/paru-bin.git --single-branch && \
         --noconfirm --removemake=yes
 
 # Build Kernel
-RUN env _NUMAdisable=y _use_llvm_lto=thin _use_lto_suffix= _use_kcfi=y paru -S \
+RUN env _NUMAdisable=y _use_llvm_lto=thin _use_lto_suffix= _nr_cpus=$(nproc) _use_kcfi=y paru -S \
         aur/linux-cachyos \
         aur/linux-cachyos-headers \
         --noconfirm
@@ -60,11 +60,7 @@ RUN userdel -r build && \
 RUN pacman-key --init && \
     pacman-key --populate && \
     sed -i '/\#\[core-testing\]/i \
-[core-x86-64-v3]\n\
-Include = /etc/pacman.d/alhp-mirrorlist\n\
-\n\
-[extra-x86-64-v3]\n\
-Include = /etc/pacman.d/alhp-mirrorlist\n' /etc/pacman.conf
+[core-x86-64-v3]\nInclude = /etc/pacman.d/alhp-mirrorlist\n\n[extra-x86-64-v3]\nInclude = /etc/pacman.d/alhp-mirrorlist\n' /etc/pacman.conf
 
 # Install kernel, firmware, microcode, filesystem tools, bootloader, depndencies and run hooks once:
 RUN pacman -Syyu --noconfirm && \
@@ -103,7 +99,7 @@ RUN echo "options overlay metacopy=off redirect_dir=off" > /etc/modprobe.d/disab
 # OSTree: Prepare microcode and initramfs
 RUN moduledir=$(find /usr/lib/modules -mindepth 1 -maxdepth 1 -type d) && \
     cat /boot/*-ucode.img \
-        /boot/initramfs-linux-fallback.img \
+        /boot/initramfs-*-fallback.img \
         > ${moduledir}/initramfs.img
 
 # OSTree: Bootloader integration
@@ -120,4 +116,4 @@ RUN pacman -Rcns \
     llvm \
     lld \
     --noconfirm && \
-    pacman -Rcns $(pacman -Qttdq) --noconfirm
+    pacman -Rcns $(pacman -Qtdq) --noconfirm
