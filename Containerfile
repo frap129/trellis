@@ -74,6 +74,10 @@ RUN git clone https://aur.archlinux.org/paru-bin.git --single-branch && \
         aur/uksmd \
         --noconfirm --removemake=yes --cleanafter --nokeepsrc
 
+# Install custom packages
+ADD --chown=build:build pkgbuilds /home/build/pkgbuilds
+RUN ls -d /home/build/pkgbuilds/* | xargs paru -B --noconfirm --removemake=yes --cleanafter --nokeepsrc 
+
 # Cleanup AUR builder
 USER root
 WORKDIR /
@@ -138,6 +142,7 @@ RUN curl https://raw.githubusercontent.com/ostreedev/ostree/main/src/boot/grub2/
     chmod +x /etc/grub.d/15_ostree
 
 ADD rootfs/etc/systemd/zram-generator.conf /etc/systemd/zram-generator.conf
+ADD rootfs/usr/lib/bootc/00-trellis.toml /usr/lib/bootc/trellis
 
 ##
 ## STAGE 6: Finalize

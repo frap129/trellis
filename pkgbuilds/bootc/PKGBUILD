@@ -1,0 +1,47 @@
+# Maintainer: frap129 <joe@maples.dev>
+#
+pkgname=bootc
+pkgver=0.1.4
+pkgrel=1
+pkgdesc="bootc - Transactional, in-place operating system updates using OCI/Docker container images."
+arch=("x86_64")
+url="https://github.com/containers/bootc"
+license=("Apache2")
+depends=("podman" "gcc-libs")
+makedepends=("rust" "make")
+source=(
+  "$pkgname-$pkgver.tar.zstd::$url/releases/download/v$pkgver/$pkgname-$pkgver.tar.zstd"
+  "$pkgname-$pkgver-vendor.tar.zstd::$url/releases/download/v$pkgver/$pkgname-$pkgver-vendor.tar.zstd"
+  )
+sha256sums=(
+  'SKIP'
+	'SKIP'
+)
+
+prepare() {
+  mv vendor ${srcdir}/${pkgname}-${pkgver}/vendor
+	cd ${srcdir}/${pkgname}-${pkgver}/
+  cat >>.cargo/config.toml << EOF
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "vendor"
+EOF
+}
+
+build() {
+	cd ${srcdir}/${pkgname}-${pkgver}/
+	make
+}
+
+check() {
+	cd ${srcdir}/${pkgname}-${pkgver}/
+	cargo test --release --frozen
+}
+
+package() {
+	cd ${srcdir}/${pkgname}-${pkgver}/
+  DESTDIR="${pkgdir}" prefix="/usr" make install
+}
+

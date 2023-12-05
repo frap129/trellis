@@ -1,0 +1,17 @@
+pkgbase = bootc
+	pkgdesc = bootc - Transactional, in-place operating system updates using OCI/Docker container images.
+	pkgver = 0.1.4
+	pkgrel = 1
+	url = https://github.com/containers/bootc
+	arch = x86_64
+	license = Apache2
+	makedepends = rust
+	makedepends = make
+	depends = podman
+	depends = gcc-libs
+	source = bootc-0.1.4.tar.zstd::https://github.com/containers/bootc/releases/download/v0.1.4/bootc-0.1.4.tar.zstd
+	source = bootc-0.1.4-vendor.tar.zstd::https://github.com/containers/bootc/releases/download/v0.1.4/bootc-0.1.4-vendor.tar.zstd
+	sha256sums = SKIP
+	sha256sums = SKIP
+
+pkgname = bootc
