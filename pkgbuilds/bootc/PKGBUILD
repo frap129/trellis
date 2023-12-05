@@ -7,7 +7,7 @@ pkgdesc="bootc - Transactional, in-place operating system updates using OCI/Dock
 arch=("x86_64")
 url="https://github.com/containers/bootc"
 license=("Apache2")
-depends=("podman" "gcc-libs")
+depends=("skopeo" "gcc-libs")
 makedepends=("rust" "make")
 source=(
   "$pkgname-$pkgver.tar.zstd::$url/releases/download/v$pkgver/$pkgname-$pkgver.tar.zstd"
