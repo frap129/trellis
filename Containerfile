@@ -72,11 +72,11 @@ RUN git clone https://aur.archlinux.org/paru-bin.git --single-branch && \
         aur/ananicy-cpp \
         aur/cachyos-ananicy-rules-git \
         aur/uksmd \
-        --noconfirm --removemake=yes --cleanafter --nokeepsrc
+        --noconfirm --removemake=yes --nokeepsrc
 
 # Install custom packages
 ADD --chown=build:build pkgbuilds /home/build/pkgbuilds
-RUN ls -d /home/build/pkgbuilds/* | xargs paru -B --noconfirm --removemake=yes --cleanafter --nokeepsrc 
+RUN ls -d /home/build/pkgbuilds/* | xargs paru -B --noconfirm --removemake=yes --nokeepsrc 
 
 # Cleanup AUR builder
 USER root
