@@ -94,8 +94,8 @@ RUN userdel -r build && \
 RUN pacman-key -r 19A2282AFCA8A81E && \
     pacman-key --lsign 19A2282AFCA8A81E && \
     pacman -U \
-    https://builds.garudalinux.org/repos/chaotic-aur/x86_64/linux-cachyos-6.6.3-2-x86_64.pkg.tar.zst \
-    https://builds.garudalinux.org/repos/chaotic-aur/x86_64/linux-cachyos-headers-6.6.3-2-x86_64.pkg.tar.zst \
+    https://builds.garudalinux.org/repos/chaotic-aur/x86_64/linux-cachyos-6.6.4-1-x86_64.pkg.tar.zst \
+    https://builds.garudalinux.org/repos/chaotic-aur/x86_64/linux-cachyos-headers-6.6.4-1-x86_64.pkg.tar.zst \
     --noconfirm
 
 ##
