@@ -141,7 +141,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           containerfiles: |
-            ./Containerfile
+            ./Containerfile.base
           image: ${{ env.IMAGE_NAME }}
           tags: |
             ${{ steps.generate-tags.outputs.alias_tags }}
@@ -150,6 +150,30 @@ jobs:
             IMAGE_VENDOR=${{ github.repository_owner }}
             BASE_IMAGE_NAME=${{ matrix.base_image_name }}
             BASE_IMAGE_FLAVOR=${{ matrix.base_image_flavor }}
+          labels: ${{ steps.meta.outputs.labels }}
+          oci: false
+          extra-args: |
+            --target=${{ matrix.base_name }}-base
+         
+      - name: Export Image Tarball
+        id: export
+        run: |
+          podman export ${{ steps.build_image.outputs.image }} -o image.tar
+          echo "TAR_PATH=$(ls $PWD/image.tar)" >> $GITHUB_OUTPUT
+
+      # Build image using Buildah action
+      - name: Build Image
+        id: build_image2
+        uses: redhat-actions/buildah-build@v2
+        with:
+          containerfiles: |
+            ./Containerfile.ostree
+          image: ${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ steps.generate-tags.outputs.alias_tags }}
+          build-args: |
+            IMAGE_NAME=${{ env.IMAGE_NAME }}
+            TAR_PATH=${{ steps.export.outputs.TAR_PATH }}
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
           extra-args: |
@@ -172,8 +196,8 @@ jobs:
           REGISTRY_USER: ${{ github.actor }}
           REGISTRY_PASSWORD: ${{ github.token }}
         with:
-          image: ${{ steps.build_image.outputs.image }}
-          tags: ${{ steps.build_image.outputs.tags }}
+          image: ${{ steps.build_image2.outputs.image }}
+          tags: ${{ steps.build_image2.outputs.tags }}
           registry: ${{ steps.registry_case.outputs.lowercase }}
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}

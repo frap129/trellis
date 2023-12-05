@@ -1,0 +1,30 @@
+# Maintainer: frap129 <joe@maples.dev>
+#
+pkgname=ostree-ext-cli
+pkgver=0.12.0
+pkgrel=1
+pkgdesc="bootc - Transactional, in-place operating system updates using OCI/Docker container images."
+arch=("x86_64")
+url="https://github.com/ostree-dev/ostree-rs-ext"
+license=("Apache2")
+depends=("ostree" "gcc-libs")
+makedepends=("rust")
+source=(
+  "ostree-ext-v$pkgver.tar.gz::https://github.com/ostreedev/ostree-rs-ext/archive/refs/tags/ostree-ext-v${pkgver}.tar.gz"
+  )
+sha256sums=(
+  'SKIP'
+)
+
+build() {
+	cd ${srcdir}
+	cd ${srcdir}/ostree-rs-ext-ostree-ext-v${pkgver}/cli/
+	cargo build --release
+}
+
+package() {
+	cd ${srcdir}/ostree-rs-ext-ostree-ext-v${pkgver}/
+	mkdir ${pkgdir}/usr/bin/ -p
+  install -Dm755 target/release/${pkgname} ${pkgdir}/usr/bin/${pkdname}
+}
+
