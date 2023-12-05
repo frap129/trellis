@@ -76,7 +76,7 @@ RUN git clone https://aur.archlinux.org/paru-bin.git --single-branch && \
 
 # Install custom packages
 ADD --chown=build:build pkgbuilds /home/build/pkgbuilds
-RUN ls -d /home/build/pkgbuilds/* | xargs paru -B --noconfirm --removemake=yes --nokeepsrc 
+RUN ls -d /home/build/pkgbuilds/* | xargs paru -B --noconfirm --removemake=yes --nokeepsrc --mflags -i
 
 # Cleanup AUR builder
 USER root
